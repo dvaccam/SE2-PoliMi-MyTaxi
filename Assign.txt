@@ -1,16 +1,3 @@
-Ivana:
-Overview
-Sc: normal one, reservation
-UC: receive response, cancel accepted request (taxi)
-Assumptions and dependencies
-
-Daniel:
-Product perspective
-Sc: car sharing
-UC: Request taxi service, Receive request
-
-Alexis:
-Stake holder, users, actors
-Sc: taxi driver declines
-UC: Cancel accepted request (pass),  accept request
-Constraints
+UC Edit account
+Sequence diagrams
+Alloy
