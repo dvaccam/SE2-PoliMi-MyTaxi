@@ -109,9 +109,9 @@ sig AcceptedRqst
 sig MyTaxiService
 {
 //	queues: one QueueList,
-	rqsts: some RqstForSrv,
-	incoming: some IncomingRqst,
-	accepted: some AcceptedRqst
+	all_rqsts: set RqstForSrv,
+	all_incoming: set IncomingRqst,
+	all_accepted: set AcceptedRqst
 }
 /*
 sig Queue
@@ -128,38 +128,41 @@ sig Queue
 
 fact
 {
-	#MyTaxiService > 1
+	#MyTaxiService = 2
 	#True = 1
 	#False = 1
 
-	all r: RqstForSrv, m:MyTaxiService | r in m.rqsts
-	all r: IncomingRqst, m:MyTaxiService | r in m.incoming
-	all r: AcceptedRqst, m:MyTaxiService | r in m.accepted
+	all r: RqstForSrv {some m:MyTaxiService | r in m.all_rqsts}
+	all r: IncomingRqst {some m:MyTaxiService | r in m.all_incoming}
+	all r: AcceptedRqst {some m:MyTaxiService | r in m.all_accepted}
 
 	all r: RqstForSrv { one p:Passenger | r in p.rqst}
 	all r: RqstForSrv { one i:IncomingRqst | r in i.rqsts}
 	all a: AcceptedRqst{ one i:IncomingRqst | a in i.accepted}
  	all i:IncomingRqst { one d:TaxiDriver | i in d.incRqst}
 	all i:IncomingRqst { #i.accepted > 0 implies #i.accepted = #i.rqsts}
+	all m:MyTaxiService, i:m.(m<:all_incoming),  r:m.(m<:all_rqsts), a:m.(m<:all_accepted) { a in m.all_accepted and r in m.all_rqsts}
 	all t:TaxiDriver | t.availability = True and #t.incRqst > 0 implies #t.incRqst.accepted = 0
 }
 
 
 pred passengerSendsRequest[m, m': MyTaxiService, p, p':Passenger, r: RqstForSrv]
 {
+	r not in m.all_rqsts
+	r not in p.rqst
 	p'.rqst = p.rqst + r
-	m'.rqsts = m.rqsts + r
+	m'.all_rqsts = m.all_rqsts + r
 }
 
 pred driverReceivesRequest[m, m': MyTaxiService, t, t': TaxiDriver, i:IncomingRqst]
 {
-	m'.incoming = m.incoming + i
+	m'.all_incoming = m.all_incoming + i
 	t'.incRqst = t.incRqst + i
 }
 
 pred driverAcceptsRequest[m, m': MyTaxiService, t, t':TaxiDriver, a:AcceptedRqst]
 {
-	m'.accepted = m.accepted + a
+	m'.all_accepted = m.all_accepted + a
 	t'.incRqst.accepted = t.incRqst.accepted + a
 	t'.availability = False
 }
@@ -171,8 +174,9 @@ pred driverDeclinesRequest[t:TaxiDriver]
 
 pred passengerCancelsAcceptedRequest[m, m': MyTaxiService, p: Passenger]
 {
-	m'.rqst = m.rqst - p.rqst
-	m'.incoming = m.incoming - rqst:>
+	m'.all_rqsts = m.all_rqsts - p.rqst
+	m'.all_incoming = m.all_incoming - (m.all_incoming<:rqsts).(p.rqst)
+	m'.all_accepted = m.all_accepted - (m.all_incoming<:rqsts).(p.rqst).accepted
 }
 
 
@@ -180,4 +184,4 @@ pred passengerCancelsAcceptedRequest[m, m': MyTaxiService, p: Passenger]
 pred show{}
 
 
-run requestSent
+run passengerSendsRequest
