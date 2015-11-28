@@ -1,3 +1,2 @@
-UC Edit account
-Sequence diagrams
-Alloy
+For each class:
+Description of class and methods, the component where they belong to
