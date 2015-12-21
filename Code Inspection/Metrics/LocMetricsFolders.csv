@@ -1,0 +1,5 @@
+Folder,Files,LOC,SLOC-P,SLOC-L,MVG,BLOC,C&SLOC,CLOC,CWORD,HCLOC,HCWORD
+Total,20,6758,4198,2823,661,1320,2,1240,9615,741,6251
+C:\Users\DanielFelipe\Documents\GF\4.1.1\appserver\common\container-common\src\main\java\com\sun\enterprise\container\common\impl,20,6758,4198,2823,661,1320,2,1240,9615,741,6251
+C:\Users\DanielFelipe\Documents\GF\4.1.1\appserver\common\container-common\src\main\java\com\sun\enterprise\container\common\impl\managedbean,2,817,479,348,58,211,0,127,937,78,658
+C:\Users\DanielFelipe\Documents\GF\4.1.1\appserver\common\container-common\src\main\java\com\sun\enterprise\container\common\impl\util,7,1691,936,595,108,306,0,449,3385,273,2303
