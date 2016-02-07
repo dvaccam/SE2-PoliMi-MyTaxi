@@ -1,3 +1,0 @@
-No comments in the class/methods.
-In line 137, the inner class. All inner could be grouped in the same section.
-Line 698. The descriptor is used neither in the condition nor in the else; maybe a problem
